@@ -11,6 +11,7 @@ import java.util.List;
 public class CppZoo {
     static String gbirthDate = "";
     static  String ganimalAge = "";
+    static String gGender = "";
 
 
      static String genBirthDay(String age, String season){
@@ -57,6 +58,19 @@ public class CppZoo {
         return ganimalAge;
     }
 
+    // Extract gender from first contents of file
+    static String stripGender(String age){
+         int index = age.indexOf("female");
+         if (index == -1){
+             gGender = "male";
+         }
+         else{
+             gGender = "female";
+         }
+        //System.out.println("gender is: " + gGender);
+        return  gGender;
+    }
+
     static void createFileAndWrite(){
         //Create a file
         try {
@@ -99,6 +113,10 @@ public class CppZoo {
         String age = "";
         String season = "";
         String animalInfo = "";
+        String animalColor = "";
+        String animalWeight = "";
+        String animalFrom = "";
+        String animalPark = "";
 
         try {
             BufferedReader bf = new BufferedReader(new FileReader(path));
@@ -108,16 +126,20 @@ public class CppZoo {
                 contents = line.split(",");
                 age = contents[0];
                 season = contents[1];
+                animalColor = contents[2].trim();
+                animalWeight = contents[3];
+                animalPark = contents[4];
+                animalFrom = contents[5];
 
                 stripAge(age);
+                stripGender(age);
                 genBirthDay(age,season);
 
                 //System.out.println("age = " + ganimalAge);
                 //System.out.println("birthday = " +  gbirthDate);
 
-                animalInfo = ganimalAge + "; birth date " + gbirthDate;
+                animalInfo = ganimalAge + "; birth date " + gbirthDate + "; " + animalColor + "; " + gGender + "; " + animalWeight + "; " + animalPark + "; " + animalFrom;
                 System.out.println(animalInfo);
-
 
             }
             bf.close();
