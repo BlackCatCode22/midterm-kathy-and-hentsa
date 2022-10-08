@@ -65,106 +65,80 @@ public class CppZoo {
 
         //generate random number
         Random randNum = new Random();
-        int upperBound = 60;
+        int upperBound = 999;
         String newNum = "";
 
         int int_random = randNum.nextInt(1,upperBound);
         newNum = Integer.toString(int_random);
 
-        //Access Zoo Population to see if ID is used
-        accessZooPopulationID(newNum);
-
         //Assign new ID to animal
         gNewAnimalID = gAnimalType.substring(0,2).toUpperCase() + newNum;
         return  gNewAnimalID;
-
     }
 
-    //Method to assign name to arriving animal
-    static String genAnimalName(String gAnimalType){
-        String inFile = "c:/javaScratch/zooPopulation.txt";
-        String toMatch = gAnimalType.substring(0,2);
+    public static String generateName(HashMap<String, Boolean> used, String[][] names, String species){
 
-        int lineCount = fileLineCount(inFile);
-        String[] linesInAnimalNameFile = new String[lineCount];
+        int speciesId;
+        Random rand = new Random();
+        switch (species){
+            case "Hy":
+                speciesId = 0;
+                break;
+            case "Li":
+                speciesId = 1;
+                break;
+            case "Be":
+                speciesId = 2;
+                break;
+            case "Ti":
+                speciesId = 3;
+                break;
+            default:
+                speciesId = 0;
+        }
+        String name = "";
+        do {
+            name = names[speciesId][rand.nextInt(names[speciesId].length)];
+        } while (used.containsKey(name));
+        used.put(name, true);
+        return name;
+    }
 
-        String str[] = new String[lineCount];
-        String usedNames[] = new String[0];
-
+    static void genZooHabitats(String inputInfo){
+        String fileName = "c:/javaScratch/zooPopulation.txt";
+        PrintWriter printWriter = null;
+        File file = new File(fileName);
         try {
-            File myFile = new File(inFile);
-            Scanner myReader = new Scanner(myFile);
-            while (myReader.hasNextLine()){
-                String myData = myReader.nextLine();
-                String matchingData = "";
-                if (myData != ""){
-                    matchingData = myData.substring(0,2).toLowerCase();
-                    if (matchingData.equals(toMatch)){
-                        if (!myData.contains("Habitat")){
-                            str = myData.split(",");
-                        }
-                    }
-                }
-            }
-            myReader.close();
-        }
-        catch(FileNotFoundException e){
-            e.printStackTrace();
-        }
-
-        if (str != null) {
-             usedNames = str;
-        }
-
-        //Access animal names files to pick one not used
-        String[] availableNames =  accessAnimalNames(gAnimalType);
-
-        if (usedNames.length != 0){
-            // Loop through available names to make sure it hasn't been used
-            for (int i=0; i< availableNames.length; i++){
-                for (int j=0; j<usedNames.length; j++){
-                    if (usedNames[j] != null){
-                        if (usedNames[j].contains(availableNames[i])) {
-                            j++;
-                        }
-                        gAnimalName = availableNames[i];
-                        i++;
-                        break;
-                    }
-                    break;
-                }
-                break;
+            if (!file.exists()) file.createNewFile();
+            printWriter = new PrintWriter(new FileOutputStream(fileName, true));
+            printWriter.write(newLine + inputInfo);
+        } catch (IOException ioex) {
+            ioex.printStackTrace();
+        } finally {
+            if (printWriter != null) {
+                printWriter.flush();
+                printWriter.close();
             }
         }
-        else {
-            for (int i=0; i< availableNames.length; i++){
-                gAnimalName = availableNames[i];
-                i++;
-                break;
-            }
-        }
-        return gAnimalName;
-     }
-
+    }
 
     ////////////////////////////////////////////////////////////////
     //Custom Methods to parse information
     static String stripAge(String age){
         int index = age.indexOf("old");
         ganimalAge = age.substring(0, index+3);
-        //System.out.println("age=" + ganimalAge);
         return ganimalAge;
     }
 
     // Extract gender from first contents of file
     static String stripGender(String age){
-         int index = age.indexOf("female");
-         if (index == -1){
-             gGender = "male";
-         }
-         else{
+         if (age.contains("female")){
              gGender = "female";
          }
+         else {
+             gGender = "male";
+         }
+
         //System.out.println("gender is: " + gGender);
         return  gGender;
     }
@@ -183,209 +157,39 @@ public class CppZoo {
          return  gAnimalType;
     }
 
-
     ////////////////////////////////////////////////////////
-    //Access zoo population for new ID
-    static boolean accessZooPopulationID(String randNum) {
-        String animalNamePath = "C:/javaScratch/zooPopulation.txt";
-        String animalId = "";
-        Boolean okay = false;
-
-        Scanner sc = null;
-        try {
-            File file = new File(animalNamePath); // java.io.File
-            sc = new Scanner(file);     // java.util.Scanner
-            String line;
-
-            while (sc.hasNextLine()) {
-                line = sc.nextLine();
-                line = line.toLowerCase();
-                if (line != ""){
-                    animalId = line.substring(2,4);
-                    if (isInteger(animalId)){
-                        if (animalId.equals(randNum)){
-                            okay = true;
-                        }
-                    }
-                }
-            }
-            sc.close();
-        }
-        catch (FileNotFoundException e) {
-            System.out.println("An error occurred.");
-            e.printStackTrace();
-        }
-        return  okay;
-    }
-
-    //Accessing zooPopulation file to get a list of used names
-    static void accessZooPopulationNames(String animalType) {
-        String tempFileName = "c:/javaScratch/tempFile.txt";
-        String animalFile = "c:/javaScratch/zooPopluation.txt";
-        PrintWriter printWriter = null;
-
-        // Get line count for file
-        int lineCount = fileLineCount(tempFileName);
-
-        // Get the lines into a 1D array.
-        String[] linesInAnimalNameFile = convertFileToArray(tempFileName);
-        int elementNum = 0;
-
-        // Return only the list of names for that animal type
-        String returnString ="";
-        String matchingString = "";
-
-        try {
-            File file = new File(tempFileName);
-            Scanner scanner = new Scanner(file);
-
-            while (scanner.hasNextLine()) {
-                String fileLineAsString = scanner.nextLine();
-                // Write string data to the array.
-                if (fileLineAsString != ""){
-                    linesInAnimalNameFile[elementNum] = fileLineAsString;
-                    elementNum++;
-                }
-            }
-            // Close the file.
-            scanner.close();
-        } catch (FileNotFoundException e) {
-            System.out.println("An error occurred.");
-            e.printStackTrace();
-        }
-        //String str[] = returnString.split(",");
-    }
-
-    static int fileLineCount(String filePath){
-        int lineCount = 0;
-
-        // Open a file and read it line by line.
-        try {
-            File file = new File(filePath);
-            Scanner scanner = new Scanner(file);
-            lineCount = 1;
-            while (scanner.hasNextLine()) {
-                String data = scanner.nextLine();
-                lineCount++;
-            }
-            scanner.close();
-        } catch (FileNotFoundException e) {
-            System.out.println("An error occurred.");
-            e.printStackTrace();
-        }
-        return  lineCount;
-    }
-
-    static String[] convertFileToArray(String filePath){
-        int lineCount = fileLineCount(filePath);
-        String[] linesInAnimalNameFile = new String[lineCount];
-        int elementNum = 0;
-
-        try {
-            File file = new File(filePath);
-            Scanner scanner = new Scanner(file);
-
-            while (scanner.hasNextLine()) {
-                String fileLineAsString = scanner.nextLine();
-                // Write string data to the array.
-                if (fileLineAsString != ""){
-                    linesInAnimalNameFile[elementNum] = fileLineAsString;
-                    elementNum++;
-                }
-            }
-            // Close the file.
-            scanner.close();
-        } catch (FileNotFoundException e) {
-            System.out.println("An error occurred.");
-            e.printStackTrace();
-        }
-        return linesInAnimalNameFile;
-    }
-
-    static String[] accessAnimalNames(String animalType){
-       String filePath = "C:/javaScratch/animalNames.txt";
-       int lineCount = fileLineCount(filePath);
-
-        // Get the lines into a 1D array.
-        String[] linesInAnimalNameFile = convertFileToArray(filePath);
-        int elementNum = 0;
-
-        // Return only the list of names for that animal type
-        String returnString = "";
-        for (int i=0; i<linesInAnimalNameFile.length; i++){
-            if (linesInAnimalNameFile[i].toLowerCase().startsWith(animalType)){
-                i++;
-                returnString = linesInAnimalNameFile[i];
-                break;
-            }
-        }
-        String str[] = returnString.split(",");
-        return str;
-    }
-
-    //Method to determine if string is Integer
-    static boolean isInteger( String input ) {
-        try {
-            Integer.parseInt( input );
-            return true;
-        }
-        catch( Exception e ) {
-            return false;
-        }
-    }
-
-    static void createFileAndWrite(String inputInfo){
-        String fileName = "c:/javaScratch/zooPopulation.txt";
-        PrintWriter printWriter = null;
-        File file = new File(fileName);
-        try {
-            if (!file.exists()) file.createNewFile();
-            printWriter = new PrintWriter(new FileOutputStream(fileName, true));
-            printWriter.write(newLine + inputInfo);
-        } catch (IOException ioex) {
-            ioex.printStackTrace();
-        } finally {
-            if (printWriter != null) {
-                printWriter.flush();
-                printWriter.close();
-            }
-        }
-    }
-
-    static String[] createTempFile(String animalType){
-        String inFile = "c:/javaScratch/zooPopulation.txt";
-        String toMatch = animalType.substring(0,2);
-
-        int lineCount = fileLineCount(inFile);
-        String[] linesInAnimalNameFile = new String[lineCount];
-
-        String str[] = new String[lineCount];
-
-        try {
-            File myFile = new File(inFile);
-            Scanner myReader = new Scanner(myFile);
-            while (myReader.hasNextLine()){
-                String myData = myReader.nextLine();
-                String matchingData = "";
-                if (myData != ""){
-                    matchingData = myData.substring(0,2).toLowerCase();
-                    if (matchingData.equals(toMatch)){
-                        if (!myData.contains("Habitat")){
-                            str = myData.split(",");
-                        }
-                    }
-                }
-            }
-            myReader.close();
-        }
-        catch(FileNotFoundException e){
-            e.printStackTrace();
-        }
-        return str;
-    }
 
     public static void main(String[] args){
         System.out.println("\nWelcome to my Midterm Project");
+        HashMap<String, Boolean> usedNames = new HashMap<String, Boolean>();
+        HashMap<String, String[]> allAnimalData = new HashMap<String, String[]>();
+        String filePath = "C:/javaScratch/animalNames.txt";
+
+        Random rand = new Random();
+        String[][] zooIds = new String[4][4];
+
+        // Get Names
+        String animalNamesPath =  ("C:/javaScratch/animalNames.txt");
+        String[] animalNames = new String[0];
+        try {
+            String names = "";
+            File namesFile = new File(animalNamesPath);
+            Scanner scannerFile = new Scanner(namesFile);
+            while (scannerFile.hasNextLine()){
+                String data = scannerFile.nextLine();
+                if (data.contains(",")){
+                    names = names.concat(data + ";");
+                }
+            }
+            scannerFile.close();
+            animalNames = names.split(";");
+        } catch (FileNotFoundException e){
+            System.out.println("who");
+            e.printStackTrace();
+        }
+
+        String[][] allNames = {animalNames[0].split(", "),animalNames[1].split(", "),animalNames[2].split(", "),animalNames[3].split(", ")};
+
 
         // Open a text file and read the contents into a linear array.
         String arrivingAnimalPath = "C:/javaScratch/arrivingAnimals.txt";
@@ -421,10 +225,11 @@ public class CppZoo {
                 //Call method to determine new ID
                 genUAnimalID(gAnimalType);
 
-                createTempFile(gAnimalType);
-
                 //Call method to assign animal name
-                genAnimalName(gAnimalType);
+                String species = "";
+                species = contents[0].split(" ")[4].substring(0, 1).toUpperCase() + contents[0].split(" ")[4].substring(1, 2);
+
+                gAnimalName = generateName(usedNames, allNames, species);
 
                 //Get current date for arrival date
                 DateFormat dateFormat = new SimpleDateFormat("MMMM dd YYYY");
@@ -432,7 +237,7 @@ public class CppZoo {
 
                 animalInfo = gNewAnimalID + ", " + gAnimalName + ", " + ganimalAge + "; birth date " + gbirthDate + "; " + animalColor + "; " + gGender + "; " + animalWeight + "; " + animalPark + "; " + animalFrom + ", arrived " + dateFormat.format(date) ;
 
-                createFileAndWrite(animalInfo);
+                genZooHabitats(animalInfo);
 
                 //System.out.println(animalInfo);
 
