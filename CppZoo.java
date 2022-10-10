@@ -76,7 +76,7 @@ public class CppZoo {
         return  gNewAnimalID;
     }
 
-    public static String generateName(HashMap<String, Boolean> used, String[][] names, String species){
+    public static String genAnimalName(HashMap<String, Boolean> used, String[][] names, String species){
 
         int speciesId;
         Random rand = new Random();
@@ -105,7 +105,7 @@ public class CppZoo {
     }
 
     static void genZooHabitats(String inputInfo){
-        String fileName = "c:/javaScratch/zooPopulation.txt";
+        String fileName = "c:/javaScratch/newZooPopulation.txt";
         PrintWriter printWriter = null;
         File file = new File(fileName);
         try {
@@ -202,6 +202,7 @@ public class CppZoo {
         String animalWeight = "";
         String animalFrom = "";
         String animalPark = "";
+        String species = "";
 
         // Read the arriving animal file and parse out the info needed
         try {
@@ -215,6 +216,7 @@ public class CppZoo {
                 animalWeight = contents[3];
                 animalPark = contents[4];
                 animalFrom = contents[5];
+                species = contents[0].split(" ")[4].substring(0, 1).toUpperCase() + contents[0].split(" ")[4].substring(1, 2);
 
                 // Calling methods to get specific info needed
                 stripAge(age);
@@ -226,10 +228,7 @@ public class CppZoo {
                 genUAnimalID(gAnimalType);
 
                 //Call method to assign animal name
-                String species = "";
-                species = contents[0].split(" ")[4].substring(0, 1).toUpperCase() + contents[0].split(" ")[4].substring(1, 2);
-
-                gAnimalName = generateName(usedNames, allNames, species);
+                gAnimalName = genAnimalName(usedNames, allNames, species);
 
                 //Get current date for arrival date
                 DateFormat dateFormat = new SimpleDateFormat("MMMM dd YYYY");
@@ -237,6 +236,7 @@ public class CppZoo {
 
                 animalInfo = gNewAnimalID + ", " + gAnimalName + ", " + ganimalAge + "; birth date " + gbirthDate + "; " + animalColor + "; " + gGender + "; " + animalWeight + "; " + animalPark + "; " + animalFrom + ", arrived " + dateFormat.format(date) ;
 
+                //Create file of arriving animals
                 genZooHabitats(animalInfo);
 
                 //System.out.println(animalInfo);
