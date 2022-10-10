@@ -104,14 +104,41 @@ public class CppZoo {
         return name;
     }
 
-    static void genZooHabitats(String inputInfo){
-        String fileName = "c:/javaScratch/newZooPopulation.txt";
+    static void genZooHabitats(String inputInfo, Boolean newHabitat){
+        String fileName = "c:/javaScratch/zooPopulation.txt";
         PrintWriter printWriter = null;
         File file = new File(fileName);
+        String habitateName = "";
+        String habitat = inputInfo.substring(0,2);
+
         try {
             if (!file.exists()) file.createNewFile();
             printWriter = new PrintWriter(new FileOutputStream(fileName, true));
+
+            switch(habitat){
+                case("HY"):
+                    habitateName = "Hyena Habitat:";
+                    break;
+                case("LI"):
+                    habitateName = "Lion Habitat:";
+                    break;
+                case("TI"):
+                    habitateName = "Tiger Habitat:";
+                    break;
+                case("BE"):
+                    habitateName = "Bear Habitat:";
+                    break;
+                default:
+                    habitateName = "Animal not compatible";
+            }
+
+            if (newHabitat){
+                printWriter.write(newLine + " ");
+                printWriter.write(newLine + habitateName);
+                printWriter.write(newLine + " ");
+            }
             printWriter.write(newLine + inputInfo);
+
         } catch (IOException ioex) {
             ioex.printStackTrace();
         } finally {
@@ -121,6 +148,7 @@ public class CppZoo {
             }
         }
     }
+
 
     ////////////////////////////////////////////////////////////////
     //Custom Methods to parse information
@@ -162,11 +190,9 @@ public class CppZoo {
     public static void main(String[] args){
         System.out.println("\nWelcome to my Midterm Project");
         HashMap<String, Boolean> usedNames = new HashMap<String, Boolean>();
-        HashMap<String, String[]> allAnimalData = new HashMap<String, String[]>();
-        String filePath = "C:/javaScratch/animalNames.txt";
-
         Random rand = new Random();
-        String[][] zooIds = new String[4][4];
+        String oldSpecies = "";
+        Boolean newHabitat = true;
 
         // Get Names
         String animalNamesPath =  ("C:/javaScratch/animalNames.txt");
@@ -184,7 +210,7 @@ public class CppZoo {
             scannerFile.close();
             animalNames = names.split(";");
         } catch (FileNotFoundException e){
-            System.out.println("who");
+            System.out.println("file not found");
             e.printStackTrace();
         }
 
@@ -218,6 +244,14 @@ public class CppZoo {
                 animalFrom = contents[5];
                 species = contents[0].split(" ")[4].substring(0, 1).toUpperCase() + contents[0].split(" ")[4].substring(1, 2);
 
+
+                if (species.equals(oldSpecies)){
+                    newHabitat = false;
+                }
+                else {
+                    newHabitat = true;
+                }
+
                 // Calling methods to get specific info needed
                 stripAge(age);
                 stripGender(age);
@@ -235,9 +269,10 @@ public class CppZoo {
                 Date date = new Date();
 
                 animalInfo = gNewAnimalID + ", " + gAnimalName + ", " + ganimalAge + "; birth date " + gbirthDate + "; " + animalColor + "; " + gGender + "; " + animalWeight + "; " + animalPark + "; " + animalFrom + ", arrived " + dateFormat.format(date) ;
+                oldSpecies = species;
 
                 //Create file of arriving animals
-                genZooHabitats(animalInfo);
+                genZooHabitats(animalInfo, newHabitat);
 
                 //System.out.println(animalInfo);
 
