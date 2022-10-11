@@ -1,7 +1,27 @@
 Hyena Habitat:
-
-Hy01; Kamari; 4 years old; birth date Mar 21, 2018; tan color; female; 70 pounds; from Friguia Park, Tunisia; arrived Sept 27, 2022
-
+ 
+HY605, Zig, 4 year old; birth date Mar 21, 2018; tan color; female;  70 pounds;  from Friguia Park;  Tunisia, arrived October 10 2022
+HY316, Kamari, 12 year old; birth date Sept 22, 2010; brown color; male;  150 pounds;  from Friguia Park;  Tunisia, arrived October 10 2022
+HY632, Ed, 4 year old; birth date Mar 21, 2018; black color; male;  120 pounds;  from Friguia Park;  Tunisia, arrived October 10 2022
+HY409, Shenzi, 8 year old; birth date Jan 1, 2014; black and tan striped color; female;  105 pounds;  from Friguia Park;  Tunisia, arrived October 10 2022
+ 
 Lion Habitat:
-
-Li01; Kiara; 6 years old; birth date Sept 21, 2016; tan color; female; 305 pounds; from Zanzibar, Tanzania; arrived Sept 23, 2022
+ 
+LI969, Scar, 6 year old; birth date Mar 21, 2016; tan color; female;  300 pounds;  from Zanzibar;  Tanzania, arrived October 10 2022
+LI199, Drooper, 12 year old; birth date Dec 21, 2010; dark tan color; female;  375 pounds;  from KopeLion;  Tanzania, arrived October 10 2022
+LI303, Elsa, 22 year old; birth date Sept 22, 2000; golden color; male;  450 pounds;  from Zanzibar;  Tanzania, arrived October 10 2022
+LI762, Mufasa, 4 year old; birth date Mar 21, 2018; tan and brown color; female;  275 pounds;  from KopeLion;  Tanzania, arrived October 10 2022
+ 
+Tiger Habitat:
+ 
+TI378, Rayas, 2 year old; birth date Mar 21, 2020; gold and tan stripes color; male;  270 pounds;  from Dhaka;  Bangladesh, arrived October 10 2022
+TI722, Cuddles, 4 year old; birth date Mar 21, 2018; black stripes color; female;  400 pounds;  from Dhaka;  Bangladesh, arrived October 10 2022
+TI169, Rajah, 18 year old; birth date Sept 22, 2004; gold and tan color; male;  300 pounds;  from Bardia;  Nepal, arrived October 10 2022
+TI66, Amber, 3 year old; birth date Mar 21, 2019; black stripes color; female;  285 pounds;  from Bardia;  Nepal, arrived October 10 2022
+ 
+Bear Habitat:
+ 
+BE68, Paddington, 7 year old; birth date Mar 21, 2015; brown color; male;  320 pounds;  from Alaska Zoo;  Alaska, arrived October 10 2022
+BE938, Snuggles, 25 year old; birth date Mar 21, 1997; black color; female;  425 pounds;  from Woodland park Zoo;  Washington , arrived October 10 2022
+BE551, Bungle, 4 year old; birth date Sept 22, 2018; black color; female;  355 pounds;  from Woodland park Zoo;  Washington , arrived October 10 2022
+BE631, Rupert, 4 year old; birth date Mar 21, 2018; brown color; male;  405 pounds;  from Alaska Zoo;  Alaska, arrived October 10 2022
